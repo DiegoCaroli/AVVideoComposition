@@ -27,23 +27,23 @@ class VideoManager: AppDirectoryNames {
             withMediaType: .video,
             preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
 
-//        // Create the audio composition track.
-//        guard let mutableCompositionAudioTrack = mutableComposition.addMutableTrack(
-//            withMediaType: .audio,
-//            preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        // Create the audio composition track.
+        guard let mutableCompositionAudioTrack = mutableComposition.addMutableTrack(
+            withMediaType: .audio,
+            preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
 
         //Adding Audiovisual Data
 
-        // Get the first video track from each asset.
-        guard let firstAssetTrack = firstAsset.tracks(withMediaType: .video).first else { return nil }
-        guard let secondAssetTrack = secondAsset.tracks(withMediaType: .video).first else { return nil }
+        // Get the video tracks from each asset.
+        guard let firstVideoAssetTrack = firstAsset.tracks(withMediaType: .video).first else { return nil }
+        guard let secondVideoAssetTrack = secondAsset.tracks(withMediaType: .video).first else { return nil }
 
-        // Add them both to the composition.
+        // Add video tracks to the composition.
         do {
             try mutableCompositionVideoTrack
                 .insertTimeRange(CMTimeRange(start: .zero,
-                                             duration: firstAssetTrack.timeRange.duration),
-                                 of: firstAssetTrack,
+                                             duration: firstVideoAssetTrack.timeRange.duration),
+                                 of: firstVideoAssetTrack,
                                  at: .zero)
         } catch {
             print("🔴 failed to load the first track")
@@ -52,12 +52,40 @@ class VideoManager: AppDirectoryNames {
         do {
             try mutableCompositionVideoTrack
                 .insertTimeRange(CMTimeRange(start: .zero,
-                                             duration: secondAssetTrack.timeRange.duration),
-                                 of: secondAssetTrack,
-                                 at: firstAssetTrack.timeRange.duration)
+                                             duration: secondVideoAssetTrack.timeRange.duration),
+                                 of: secondVideoAssetTrack,
+                                 at: firstVideoAssetTrack.timeRange.duration)
         } catch {
             print("🔴 failed to load the second track")
         }
+
+        // Get the audio tracks from each asset.
+        guard let firstAudioAssetTrack = firstAsset.tracks(withMediaType: .audio).first else { return nil }
+        guard let secondAudioAssetTrack = secondAsset.tracks(withMediaType: .audio).first else { return nil }
+
+        // Add audio track to the composition
+        do  {
+            try mutableCompositionAudioTrack
+                .insertTimeRange(CMTimeRange(
+                    start: .zero,
+                    duration: firstAudioAssetTrack.timeRange.duration),
+                                 of: firstAudioAssetTrack,
+                                 at: .zero)
+        } catch {
+            print("🔴 failed to load the audio track")
+        }
+
+        do  {
+            try mutableCompositionAudioTrack
+                .insertTimeRange(CMTimeRange(
+                    start: .zero,
+                    duration: secondAudioAssetTrack.timeRange.duration),
+                                 of: secondAudioAssetTrack,
+                                 at: firstAudioAssetTrack.timeRange.duration)
+        } catch {
+            print("🔴 failed to load the audio track")
+        }
+
 
         return mutableComposition
     }
