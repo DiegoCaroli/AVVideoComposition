@@ -13,7 +13,6 @@ class VideoManager: AppDirectoryNames {
 
     var firstAsset: AVAsset
     let secondAsset: AVAsset
-    var videoComposition: AVMutableVideoComposition!
 
     init(firstAsset: AVAsset, secondAsset: AVAsset) {
         self.firstAsset = firstAsset
@@ -49,6 +48,33 @@ class VideoManager: AppDirectoryNames {
                            track: secondVideoAssetTrack,
                            startTime: firstVideoAssetTrack.timeRange.duration)
 
+
+        // Applying the Video Composition Layer Instructions
+        let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
+        mutableVideoCompositionInstruction.timeRange = CMTimeRange(
+            start: CMTime.zero,
+            duration: CMTimeAdd(firstVideoAssetTrack.timeRange.duration,
+                                secondVideoAssetTrack.timeRange.duration))
+        mutableVideoCompositionInstruction.backgroundColor = UIColor.blue.cgColor
+
+
+        let firstInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
+                                                                asset: firstAsset)
+        firstInstruction.setOpacity(0.0, at: firstAsset.duration)
+        let secondInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
+                                                                 asset: secondAsset)
+
+
+        mutableVideoCompositionInstruction.layerInstructions = [firstInstruction, secondInstruction]
+
+        let videoComposition = AVMutableVideoComposition()
+        videoComposition.instructions = [mutableVideoCompositionInstruction]
+         // Set the frame duration to an appropriate value (i.e. 30 frames per second for video).
+        videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
+        videoComposition.renderSize = setupRenderSize(
+            firstVideoAssetTrack: firstVideoAssetTrack,
+            secondVideoAssetTrack: secondVideoAssetTrack)
+
         // Add first audio track to the composition.
         guard let firstAudioAssetTrack = firstAsset.tracks(withMediaType: .audio).first else { return }
         addAudiovisualData(mutableCompositionTrack: mutableCompositionAudioTrack,
@@ -65,7 +91,9 @@ class VideoManager: AppDirectoryNames {
                            track: secondAudioAssetTrack,
                            startTime: firstAudioAssetTrack.timeRange.duration)
 
-        exportComposition(mutableComposition: mutableComposition, completion: completion)
+        exportComposition(mutableComposition: mutableComposition,
+                          videoComposition: videoComposition,
+                          completion: completion)
     }
 
     //Adding Audiovisual Data
@@ -87,7 +115,8 @@ class VideoManager: AppDirectoryNames {
     }
 
     private func exportComposition(mutableComposition: AVMutableComposition,
-                           completion: @escaping ((URL?, Error?) -> ())) {
+                                   videoComposition: AVMutableVideoComposition,
+                                   completion: @escaping ((URL?, Error?) -> ())) {
         // Create the export session with the composition and set the preset to the highest quality.
         guard let exporter = AVAssetExportSession(
             asset: mutableComposition,
@@ -100,8 +129,7 @@ class VideoManager: AppDirectoryNames {
         // Set the output file type to be a QuickTime movie.
         exporter.outputFileType = .mov
         exporter.shouldOptimizeForNetworkUse = true
-        #warning("doesn't work for the moment")
-//        exporter.videoComposition = self.videoComposition
+        exporter.videoComposition = videoComposition
 
         // Asynchronously export the composition to a video file and save this file to the camera roll once export completes.
         exporter.exportAsynchronously {
@@ -125,56 +153,28 @@ class VideoManager: AppDirectoryNames {
         }
     }
 
-
     // Applying the Video Composition Layer Instructions
     // Once you know the video segments have compatible orientations, you can apply the necessary layer instructions to each one and add these layer instructions to the video composition.
+    private func videoCompositionLayerInstruction(
+        _ track: AVCompositionTrack,
+        asset: AVAsset) ->  AVMutableVideoCompositionLayerInstruction {
+        // Set the transform of the layer instruction to the preferred transform of the video track.
+        let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
+        let assetTrack = asset.tracks(withMediaType: AVMediaType.video)[0]
+        layerInstruction.setTransform(assetTrack.preferredTransform, at: .zero)
 
-    private func videoCompositionLayerInstructions() ->  AVMutableVideoComposition {
-         guard let firstVideoAssetTrack = firstAsset.tracks(withMediaType: .video).first else { fatalError() }
-         guard let secondVideoAssetTrack = secondAsset.tracks(withMediaType: .video).first else { fatalError() }
-
-         // Set the time range of the first instruction to span the duration of the first video track.
-//        let firstVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-//        firstVideoCompositionInstruction.timeRange = CMTimeRange(start: .zero, duration: firstVideoAssetTrack.timeRange.duration)
-
-        // Set the time range of the second instruction to span the duration of the second video track.
-//        let secondVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-//        secondVideoCompositionInstruction.timeRange = CMTimeRange(start: firstVideoCompositionInstruction.timeRange.duration, duration: CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration))
-
-//        // Set the transform of the first layer instruction to the preferred transform of the first video track.
-//        let firstVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: firstVideoAssetTrack)
-//        firstVideoLayerInstruction.setTransform(firstVideoAssetTrack.preferredTransform, at: .zero)
-//
-//        // Set the transform of the second layer instruction to the preferred transform of the second video track.
-//        let secondVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: secondVideoAssetTrack)
-//        secondVideoLayerInstruction.setTransform(secondVideoAssetTrack.preferredTransform, at: firstVideoAssetTrack.timeRange.duration)
-//
-//        firstVideoCompositionInstruction.layerInstructions = [firstVideoLayerInstruction]
-//        secondVideoCompositionInstruction.layerInstructions = [secondVideoLayerInstruction]
-//
-        let mutableVideoComposition = AVMutableVideoComposition()
-        mutableVideoComposition.instructions = []
-//            firstVideoCompositionInstruction,
-//            secondVideoCompositionInstruction
-//        ]
-
-        setupRenderSizeAndFrameDuration(firstVideoAssetTrack: firstVideoAssetTrack,
-                                        secondVideoAssetTrack: secondVideoAssetTrack,
-                                        mutableVideoComposition: mutableVideoComposition)
-
-        return mutableVideoComposition
+        return layerInstruction
     }
 
-    // Setting the Render Size and Frame Duration
-    private func setupRenderSizeAndFrameDuration(firstVideoAssetTrack: AVAssetTrack,
-                                                 secondVideoAssetTrack: AVAssetTrack,
-                                                 mutableVideoComposition: AVMutableVideoComposition) {
+    // Setting the Render Size
+    private func setupRenderSize(firstVideoAssetTrack: AVAssetTrack,
+                                 secondVideoAssetTrack: AVAssetTrack) -> CGSize {
         var naturalSizeFirst: CGSize
         var naturalSizeSecond: CGSize
 
          // If the first video asset was shot in portrait mode, then so was the second one if we made it here.
         guard let isFirstVideoAssetPortrait = checkingVideoAssetsPortraitOrientation(firstVideoAssetTrack: firstVideoAssetTrack,
-                                                         secondVideoAssetTrack: secondVideoAssetTrack) else { return }
+                                                         secondVideoAssetTrack: secondVideoAssetTrack) else { return .zero }
 
         if isFirstVideoAssetPortrait {
             // Invert the width and height for the video tracks to ensure that they display properly.
@@ -203,9 +203,7 @@ class VideoManager: AppDirectoryNames {
             renderHeight = naturalSizeSecond.height
         }
 
-        mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
-        // Set the frame duration to an appropriate value (i.e. 30 frames per second for video).
-        mutableVideoComposition.frameDuration = CMTime(value: 1, timescale: 30)
+        return CGSize(width: renderWidth, height: renderHeight)
     }
 
     // Checking the Video Orientations must be both in the same orientation
