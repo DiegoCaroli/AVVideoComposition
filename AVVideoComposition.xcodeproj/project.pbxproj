@@ -12,9 +12,10 @@
 		F1607A5C2189B4CB00E035D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1607A5A2189B4CB00E035D6 /* Main.storyboard */; };
 		F1607A5E2189B4CB00E035D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1607A5D2189B4CB00E035D6 /* Assets.xcassets */; };
 		F1607A612189B4CB00E035D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1607A5F2189B4CB00E035D6 /* LaunchScreen.storyboard */; };
-		F1607A6A2189B72200E035D6 /* timeNoSound1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A692189B72200E035D6 /* timeNoSound1.mov */; };
-		F1607A6C2189B72900E035D6 /* timeNoSound2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A6B2189B72900E035D6 /* timeNoSound2.mov */; };
 		F1607A702189B8A400E035D6 /* FileSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A6F2189B8A400E035D6 /* FileSystemManager.swift */; };
+		F1607A722189BAA300E035D6 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A712189BAA300E035D6 /* VideoManager.swift */; };
+		F1607A762189D0FA00E035D6 /* timeNoSound1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A752189D0FA00E035D6 /* timeNoSound1.mov */; };
+		F1607A782189D10100E035D6 /* timeNoSound2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A772189D10100E035D6 /* timeNoSound2.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,9 +26,10 @@
 		F1607A5D2189B4CB00E035D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F1607A602189B4CB00E035D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F1607A622189B4CB00E035D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F1607A692189B72200E035D6 /* timeNoSound1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = timeNoSound1.mov; sourceTree = "<group>"; };
-		F1607A6B2189B72900E035D6 /* timeNoSound2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = timeNoSound2.mov; sourceTree = "<group>"; };
 		F1607A6F2189B8A400E035D6 /* FileSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManager.swift; sourceTree = "<group>"; };
+		F1607A712189BAA300E035D6 /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
+		F1607A752189D0FA00E035D6 /* timeNoSound1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = timeNoSound1.mov; sourceTree = "<group>"; };
+		F1607A772189D10100E035D6 /* timeNoSound2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = timeNoSound2.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +77,8 @@
 		F1607A682189B6C000E035D6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F1607A692189B72200E035D6 /* timeNoSound1.mov */,
-				F1607A6B2189B72900E035D6 /* timeNoSound2.mov */,
+				F1607A752189D0FA00E035D6 /* timeNoSound1.mov */,
+				F1607A772189D10100E035D6 /* timeNoSound2.mov */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				F1607A6F2189B8A400E035D6 /* FileSystemManager.swift */,
+				F1607A712189BAA300E035D6 /* VideoManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -156,9 +159,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1607A612189B4CB00E035D6 /* LaunchScreen.storyboard in Resources */,
-				F1607A6C2189B72900E035D6 /* timeNoSound2.mov in Resources */,
+				F1607A782189D10100E035D6 /* timeNoSound2.mov in Resources */,
 				F1607A5E2189B4CB00E035D6 /* Assets.xcassets in Resources */,
-				F1607A6A2189B72200E035D6 /* timeNoSound1.mov in Resources */,
+				F1607A762189D0FA00E035D6 /* timeNoSound1.mov in Resources */,
 				F1607A5C2189B4CB00E035D6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,6 +176,7 @@
 				F1607A592189B4CB00E035D6 /* HomeViewController.swift in Sources */,
 				F1607A572189B4CB00E035D6 /* AppDelegate.swift in Sources */,
 				F1607A702189B8A400E035D6 /* FileSystemManager.swift in Sources */,
+				F1607A722189BAA300E035D6 /* VideoManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
