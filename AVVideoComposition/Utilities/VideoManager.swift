@@ -72,6 +72,8 @@ class VideoManager: AppDirectoryNames {
         videoComposition.renderSize = setupRenderSize(
             firstVideoAssetTrack: firstVideoAssetTrack,
             secondVideoAssetTrack: secondVideoAssetTrack)
+        applyWatermark(mutableVideoComposition: videoComposition,
+                       text: "bar")
 
         // Add first audio track to the composition.
         guard let firstAudioAssetTrack = firstAsset.tracks(withMediaType: .audio).first else { return }
@@ -228,6 +230,39 @@ class VideoManager: AppDirectoryNames {
         } else {
             return false
         }
+    }
+
+    // Add watermark
+    private func applyWatermark(mutableVideoComposition: AVMutableVideoComposition,
+                                text: String) {
+        let parentLayer = CALayer()
+        let videoLayer = CALayer()
+
+        parentLayer.frame = CGRect(x: 0,
+                                   y: 0,
+                                   width: mutableVideoComposition.renderSize.width,
+                                   height: mutableVideoComposition.renderSize.height)
+
+        videoLayer.frame = CGRect(x: 0,
+                                   y: 0,
+                                   width: mutableVideoComposition.renderSize.width,
+                                   height: mutableVideoComposition.renderSize.height)
+        parentLayer.addSublayer(videoLayer)
+
+        let textLayer = CATextLayer()
+        textLayer.foregroundColor = UIColor.cyan.cgColor
+        textLayer.string = text
+        textLayer.font = "Helvetica" as CFTypeRef
+        textLayer.fontSize = 30
+        textLayer.alignmentMode = .center
+        textLayer.frame = CGRect(x: mutableVideoComposition.renderSize.width / 8,
+                                 y: mutableVideoComposition.renderSize.height / 2,
+                                 width: 200,
+                                 height: 50)
+        parentLayer.addSublayer(textLayer)
+
+        mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer,
+                                                                    in: parentLayer)
     }
 
 }
