@@ -46,7 +46,7 @@ class HomeViewController: UIViewController, AppDirectoryNames {
 
         videoManager = VideoManager(firstAsset: firstAsset,
                                     secondAsset: secondAsset)
-        videoManager?.exportComposition { [weak self] (url, error) in
+        videoManager?.composition { [weak self] (url, error) in
             self?.activityIndicator.stopAnimating()
             self?.loadButton.isHidden = false
 
