@@ -48,22 +48,20 @@ class VideoManager: AppDirectoryNames {
                            track: secondVideoAssetTrack,
                            startTime: firstVideoAssetTrack.timeRange.duration)
 
-
         // Applying the Video Composition Layer Instructions
         let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
         mutableVideoCompositionInstruction.timeRange = CMTimeRange(
             start: CMTime.zero,
             duration: CMTimeAdd(firstVideoAssetTrack.timeRange.duration,
                                 secondVideoAssetTrack.timeRange.duration))
-        mutableVideoCompositionInstruction.backgroundColor = UIColor.blue.cgColor
-
+        // setup a backgroud to see if I have left empy frame
+        mutableVideoCompositionInstruction.backgroundColor = UIColor.orange.cgColor
 
         let firstInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
                                                                 asset: firstAsset)
         firstInstruction.setOpacity(0.0, at: firstAsset.duration)
         let secondInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
                                                                  asset: secondAsset)
-
 
         mutableVideoCompositionInstruction.layerInstructions = [firstInstruction, secondInstruction]
 
