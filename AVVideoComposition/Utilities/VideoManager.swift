@@ -34,60 +34,57 @@ class VideoManager: AppDirectoryNames {
 
         //Adding Audiovisual Data
 
-        // Get the video tracks from each asset.
+        // Add first video track to the composition.
         guard let firstVideoAssetTrack = firstAsset.tracks(withMediaType: .video).first else { return nil }
+        addAudiovisualData(mutableCompositionTrack: mutableCompositionVideoTrack,
+                           start: .zero,
+                           duration: firstVideoAssetTrack.timeRange.duration,
+                           track: firstVideoAssetTrack,
+                           startTime: .zero)
+
+        // Add second video track to the composition.
         guard let secondVideoAssetTrack = secondAsset.tracks(withMediaType: .video).first else { return nil }
+        addAudiovisualData(mutableCompositionTrack: mutableCompositionVideoTrack,
+                           start: .zero,
+                           duration: secondVideoAssetTrack.timeRange.duration,
+                           track: secondVideoAssetTrack,
+                           startTime: firstVideoAssetTrack.timeRange.duration)
 
-        // Add video tracks to the composition.
-        do {
-            try mutableCompositionVideoTrack
-                .insertTimeRange(CMTimeRange(start: .zero,
-                                             duration: firstVideoAssetTrack.timeRange.duration),
-                                 of: firstVideoAssetTrack,
-                                 at: .zero)
-        } catch {
-            print("🔴 failed to load the first track")
-        }
-
-        do {
-            try mutableCompositionVideoTrack
-                .insertTimeRange(CMTimeRange(start: .zero,
-                                             duration: secondVideoAssetTrack.timeRange.duration),
-                                 of: secondVideoAssetTrack,
-                                 at: firstVideoAssetTrack.timeRange.duration)
-        } catch {
-            print("🔴 failed to load the second track")
-        }
-
-        // Get the audio tracks from each asset.
+        // Add first audio track to the composition.
         guard let firstAudioAssetTrack = firstAsset.tracks(withMediaType: .audio).first else { return nil }
+        addAudiovisualData(mutableCompositionTrack: mutableCompositionAudioTrack,
+                           start: .zero,
+                           duration: firstAudioAssetTrack.timeRange.duration,
+                           track: firstAudioAssetTrack,
+                           startTime: .zero)
+
+        // Add second video track to the composition.
         guard let secondAudioAssetTrack = secondAsset.tracks(withMediaType: .audio).first else { return nil }
-
-        // Add audio track to the composition
-        do  {
-            try mutableCompositionAudioTrack
-                .insertTimeRange(CMTimeRange(
-                    start: .zero,
-                    duration: firstAudioAssetTrack.timeRange.duration),
-                                 of: firstAudioAssetTrack,
-                                 at: .zero)
-        } catch {
-            print("🔴 failed to load the audio track")
-        }
-
-        do  {
-            try mutableCompositionAudioTrack
-                .insertTimeRange(CMTimeRange(
-                    start: .zero,
-                    duration: secondAudioAssetTrack.timeRange.duration),
-                                 of: secondAudioAssetTrack,
-                                 at: firstAudioAssetTrack.timeRange.duration)
-        } catch {
-            print("🔴 failed to load the audio track")
-        }
-
+        addAudiovisualData(mutableCompositionTrack: mutableCompositionAudioTrack,
+                           start: .zero,
+                           duration: secondAudioAssetTrack.timeRange.duration,
+                           track: secondAudioAssetTrack,
+                           startTime: firstAudioAssetTrack.timeRange.duration)
 
         return mutableComposition
+    }
+
+    //Adding Audiovisual Data
+    func addAudiovisualData(mutableCompositionTrack: AVMutableCompositionTrack,
+                            start: CMTime,
+                            duration: CMTime,
+                            track: AVAssetTrack,
+                            startTime: CMTime) {
+        do  {
+            try mutableCompositionTrack
+                .insertTimeRange(CMTimeRange(
+                    start: start,
+                    duration: duration),
+                                 of: track,
+                                 at: startTime)
+        } catch {
+            print("🔴 failed to load the track")
+        }
     }
 
     func exportComposition(completion: @escaping ((URL?, Error?) -> ())) {
