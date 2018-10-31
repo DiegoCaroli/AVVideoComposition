@@ -33,7 +33,8 @@ class VideoManager: AppDirectoryNames {
             preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
 
          // Add first video track to the composition.
-        guard let firstVideoAssetTrack = firstAsset.tracks(withMediaType: .video).first else { return }
+        guard let firstVideoAssetTrack = firstAsset
+            .tracks(withMediaType: .video).first else { return }
         addAudiovisualData(mutableCompositionTrack: mutableCompositionVideoTrack,
                            start: .zero,
                            duration: firstVideoAssetTrack.timeRange.duration,
@@ -41,7 +42,8 @@ class VideoManager: AppDirectoryNames {
                            startTime: .zero)
 
         // Add second video track to the composition.
-        guard let secondVideoAssetTrack = secondAsset.tracks(withMediaType: .video).first else { return }
+        guard let secondVideoAssetTrack = secondAsset
+            .tracks(withMediaType: .video).first else { return }
         addAudiovisualData(mutableCompositionTrack: mutableCompositionVideoTrack,
                            start: .zero,
                            duration: secondVideoAssetTrack.timeRange.duration,
@@ -57,13 +59,18 @@ class VideoManager: AppDirectoryNames {
         // setup a backgroud to see if I have left empy frame
         mutableVideoCompositionInstruction.backgroundColor = UIColor.orange.cgColor
 
-        let firstInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
-                                                                asset: firstAsset)
+        let firstInstruction = videoCompositionLayerInstruction(
+            mutableCompositionVideoTrack,
+            asset: firstAsset)
         firstInstruction.setOpacity(0.0, at: firstAsset.duration)
-        let secondInstruction = videoCompositionLayerInstruction(mutableCompositionVideoTrack,
-                                                                 asset: secondAsset)
+        let secondInstruction = videoCompositionLayerInstruction(
+            mutableCompositionVideoTrack,
+            asset: secondAsset)
 
-        mutableVideoCompositionInstruction.layerInstructions = [firstInstruction, secondInstruction]
+        mutableVideoCompositionInstruction.layerInstructions = [
+            firstInstruction,
+            secondInstruction
+        ]
 
         let videoComposition = AVMutableVideoComposition()
         videoComposition.instructions = [mutableVideoCompositionInstruction]
@@ -76,7 +83,8 @@ class VideoManager: AppDirectoryNames {
                        text: "bar")
 
         // Add first audio track to the composition.
-        guard let firstAudioAssetTrack = firstAsset.tracks(withMediaType: .audio).first else { return }
+        guard let firstAudioAssetTrack = firstAsset
+            .tracks(withMediaType: .audio).first else { return }
         addAudiovisualData(mutableCompositionTrack: mutableCompositionAudioTrack,
                            start: .zero,
                            duration: firstAudioAssetTrack.timeRange.duration,
@@ -84,7 +92,8 @@ class VideoManager: AppDirectoryNames {
                            startTime: .zero)
 
         // Add second video track to the composition.
-        guard let secondAudioAssetTrack = secondAsset.tracks(withMediaType: .audio).first else { return }
+        guard let secondAudioAssetTrack = secondAsset
+            .tracks(withMediaType: .audio).first else { return }
         addAudiovisualData(mutableCompositionTrack: mutableCompositionAudioTrack,
                            start: .zero,
                            duration: secondAudioAssetTrack.timeRange.duration,
@@ -98,10 +107,10 @@ class VideoManager: AppDirectoryNames {
 
     //Adding Audiovisual Data
     private func addAudiovisualData(mutableCompositionTrack: AVMutableCompositionTrack,
-                            start: CMTime,
-                            duration: CMTime,
-                            track: AVAssetTrack,
-                            startTime: CMTime) {
+                                    start: CMTime,
+                                    duration: CMTime,
+                                    track: AVAssetTrack,
+                                    startTime: CMTime) {
         do  {
             try mutableCompositionTrack
                 .insertTimeRange(CMTimeRange(
@@ -173,15 +182,16 @@ class VideoManager: AppDirectoryNames {
         var naturalSizeSecond: CGSize
 
          // If the first video asset was shot in portrait mode, then so was the second one if we made it here.
-        guard let isFirstVideoAssetPortrait = checkingVideoAssetsPortraitOrientation(firstVideoAssetTrack: firstVideoAssetTrack,
-                                                         secondVideoAssetTrack: secondVideoAssetTrack) else { return .zero }
+        guard let isFirstVideoAssetPortrait = checkingVideoAssetsPortraitOrientation(
+            firstVideoAssetTrack: firstVideoAssetTrack,
+            secondVideoAssetTrack: secondVideoAssetTrack) else { return .zero }
 
         if isFirstVideoAssetPortrait {
             // Invert the width and height for the video tracks to ensure that they display properly.
             naturalSizeFirst = CGSize(width: firstVideoAssetTrack.naturalSize.height,
                                       height: firstVideoAssetTrack.naturalSize.width)
             naturalSizeSecond = CGSize(width: secondVideoAssetTrack.naturalSize.height,
-                                       height: secondVideoAssetTrack.naturalSize.width);
+                                       height: secondVideoAssetTrack.naturalSize.width)
         } else {
             // If the videos weren't shot in portrait mode, we can just use their natural sizes.
             naturalSizeFirst = firstVideoAssetTrack.naturalSize
@@ -207,8 +217,9 @@ class VideoManager: AppDirectoryNames {
     }
 
     // Checking the Video Orientations must be both in the same orientation
-    private func checkingVideoAssetsPortraitOrientation(firstVideoAssetTrack: AVAssetTrack,
-                                                        secondVideoAssetTrack: AVAssetTrack) -> Bool? {
+    private func checkingVideoAssetsPortraitOrientation(
+        firstVideoAssetTrack: AVAssetTrack,
+        secondVideoAssetTrack: AVAssetTrack) -> Bool? {
         var isFirstVideoAssetPortrait = false
         let firstTransform = firstVideoAssetTrack.preferredTransform
 
@@ -219,11 +230,14 @@ class VideoManager: AppDirectoryNames {
         var isSecondVideoAssetPortrait = false
         let secondTransform = secondVideoAssetTrack.preferredTransform
 
-        if (secondTransform.a == 0 && secondTransform.d == 0 && (secondTransform.b == 1.0 || secondTransform.b == -1.0) && (secondTransform.c == 1.0 || secondTransform.c == -1.0)) {
+        if (secondTransform.a == 0 && secondTransform.d == 0 &&
+            (secondTransform.b == 1.0 || secondTransform.b == -1.0) &&
+            (secondTransform.c == 1.0 || secondTransform.c == -1.0)) {
             isSecondVideoAssetPortrait = true
         }
 
-        if ((isFirstVideoAssetPortrait && !isSecondVideoAssetPortrait) || (!isFirstVideoAssetPortrait && isSecondVideoAssetPortrait)) {
+        if ((isFirstVideoAssetPortrait && !isSecondVideoAssetPortrait) ||
+            (!isFirstVideoAssetPortrait && isSecondVideoAssetPortrait)) {
             return nil
         } else if (isFirstVideoAssetPortrait && isSecondVideoAssetPortrait) {
             return true
@@ -261,8 +275,9 @@ class VideoManager: AppDirectoryNames {
                                  height: 50)
         parentLayer.addSublayer(textLayer)
 
-        mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer,
-                                                                    in: parentLayer)
+        mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(
+            postProcessingAsVideoLayer: videoLayer,
+            in: parentLayer)
     }
 
 }
