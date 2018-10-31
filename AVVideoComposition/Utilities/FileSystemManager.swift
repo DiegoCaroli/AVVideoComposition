@@ -20,6 +20,7 @@ protocol AppDirectoryNames {
     func getURL(for directory: AppDirectories) -> URL
     func buildFullPath(for fileName: String, in directory: AppDirectories) -> URL
     func getURLBundleContainer(for fileName: String) -> URL?
+    func directory(url: URL)
 }
 
 extension AppDirectoryNames {
@@ -51,6 +52,14 @@ extension AppDirectoryNames {
     func getURLBundleContainer(for fileName: String) -> URL? {
         let bundle = Bundle(for: VideoManager.self)
         return bundle.url(forResource: fileName, withExtension: "mov")
+    }
+
+    func directory(url: URL) {
+        if !fileManager.fileExists(atPath: url.path) {
+            try? fileManager.createDirectory(atPath: url.path,
+                                        withIntermediateDirectories: true,
+                                        attributes: nil)
+        }
     }
 
 }

@@ -134,7 +134,9 @@ class VideoManager: AppDirectoryNames {
         let uid = UUID().uuidString
 
         // Set the desired output URL for the file created by the export process.
-        exporter.outputURL = documentsDirectoryURL.appendingPathComponent("\(uid).mov")
+        let url = buildFullPath(for: "\(uid).mov", in: .videos)
+        directory(url: videosDirectoryURL)
+        exporter.outputURL = url
         // Set the output file type to be a QuickTime movie.
         exporter.outputFileType = .mov
         exporter.shouldOptimizeForNetworkUse = true
