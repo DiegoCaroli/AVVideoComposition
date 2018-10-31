@@ -12,22 +12,21 @@ import AVKit
 class VideoPreviewViewController: UIViewController {
 
     var fileURL: URL!
-    var player: AVPlayer!
     var playerLayer: AVPlayerLayer!
+    var playerLooper: AVPlayerLooper!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        playerLayer = AVPlayerLayer()
-        playerLayer.frame = view.bounds
+        let playerItem = AVPlayerItem(url: fileURL)
+        let queuePlayer = AVQueuePlayer(items: [playerItem])
+        playerLayer = AVPlayerLayer(player: queuePlayer)
+        playerLooper = AVPlayerLooper(player: queuePlayer,
+                                      templateItem: playerItem)
 
-        player = AVPlayer(url: fileURL)
-
-        player.actionAtItemEnd = .none
-        playerLayer.player = player
         view.layer.addSublayer(playerLayer)
-
-        player.play()
+        playerLayer.frame = view.bounds
+        queuePlayer.play()
     }
 
     override func viewDidLayoutSubviews() {
