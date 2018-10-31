@@ -19,8 +19,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAy-lX-yAB">
-                                <rect key="frame" x="112" y="318.5" width="151" height="30"/>
-                                <state key="normal" title="Load Assets No Audio"/>
+                                <rect key="frame" x="145" y="318.5" width="85" height="30"/>
+                                <state key="normal" title="Load Videos"/>
                                 <connections>
                                     <action selector="loadAssetsNoAudioButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="9W5-Iy-MTx"/>
                                 </connections>

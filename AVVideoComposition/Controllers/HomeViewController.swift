@@ -25,8 +25,8 @@ class HomeViewController: UIViewController, AppDirectoryNames {
     }
 
     @IBAction func loadAssetsNoAudioButtonTapped() {
-        guard let firstURLAsset = getURLBundleContainer(for: "frameNoSound1") else { return }
-        guard let secondURLAsset = getURLBundleContainer(for: "frameNoSound2") else { return }
+        guard let firstURLAsset = getURLBundleContainer(for: "frame1") else { return }
+        guard let secondURLAsset = getURLBundleContainer(for: "frame2") else { return }
 
         self.firstAsset = AVAsset(url: firstURLAsset)
         self.secondAsset = AVAsset(url: secondURLAsset)
