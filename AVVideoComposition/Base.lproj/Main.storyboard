@@ -25,25 +25,55 @@
                                     <action selector="loadAssetsNoAudioButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="9W5-Iy-MTx"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2zV-Vk-kqH">
+                                <rect key="frame" x="167.5" y="313.5" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="Ims-2m-IOm"/>
+                                    <constraint firstAttribute="height" constant="40" id="Noe-48-Mzl"/>
+                                </constraints>
+                                <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="zAy-lX-yAB" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="GiH-pP-NDZ"/>
                             <constraint firstItem="zAy-lX-yAB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="P0z-Tn-Dcq"/>
+                            <constraint firstItem="2zV-Vk-kqH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VMU-7L-M2s"/>
+                            <constraint firstItem="2zV-Vk-kqH" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="pHF-eM-b9k"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="MPM-me-T0o">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="iwM-NM-C3o">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" style="done" systemItem="done" id="iwM-NM-C3o">
                             <connections>
                                 <action selector="doneButtonTapped:" destination="BYZ-38-t0r" id="3FR-NI-ext"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="activityIndicator" destination="2zV-Vk-kqH" id="iCh-Lq-eA8"/>
+                        <outlet property="doneButton" destination="iwM-NM-C3o" id="VzV-oE-YXY"/>
+                        <outlet property="loadButton" destination="zAy-lX-yAB" id="owM-LD-JW5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1134" y="791"/>
+        </scene>
+        <!--Video Preview View Controller-->
+        <scene sceneID="yny-ao-G8f">
+            <objects>
+                <viewController storyboardIdentifier="videoPreviewVC" id="Cwe-qx-a1F" customClass="VideoPreviewViewController" customModule="AVVideoComposition" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lTy-Uy-NUI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="zNs-CO-nTM"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rpQ-Rd-bCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1929" y="791"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="haP-Mm-tdy">

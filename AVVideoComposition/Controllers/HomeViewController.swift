@@ -14,25 +14,60 @@ class HomeViewController: UIViewController, AppDirectoryNames {
     var firstAsset: AVAsset?
     var secondAsset: AVAsset?
     var videoManager: VideoManager?
-
+    @IBOutlet var doneButton: UIBarButtonItem!
+    @IBOutlet var loadButton: UIButton!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        doneButton.isEnabled = false
     }
 
     @IBAction func loadAssetsNoAudioButtonTapped() {
-        guard let firstURLAsset = getURLBundleContainer(for: "timeNoSound1") else { return }
-        guard let secondURLAsset = getURLBundleContainer(for: "timeNoSound2") else { return }
+        guard let firstURLAsset = getURLBundleContainer(for: "frameNoSound1") else { return }
+        guard let secondURLAsset = getURLBundleContainer(for: "frameNoSound2") else { return }
 
         self.firstAsset = AVAsset(url: firstURLAsset)
         self.secondAsset = AVAsset(url: secondURLAsset)
 
+        doneButton.isEnabled = true
     }
 
     @IBAction func doneButtonTapped(_ sender: Any) {
-        videoManager = VideoManager(firstAsset: firstAsset!,
-                                    secondAsset: secondAsset!)
-        videoManager?.createComposition()
+        activityIndicator.startAnimating()
+        loadButton.isHidden = true
+
+        guard let firstAsset = firstAsset,
+            let secondAsset = secondAsset else {
+                print("🔴 load asset before")
+                return
+        }
+
+        videoManager = VideoManager(firstAsset: firstAsset,
+                                    secondAsset: secondAsset)
+        videoManager?.exportComposition { [weak self] (url, error) in
+            self?.activityIndicator.stopAnimating()
+            self?.loadButton.isHidden = false
+
+            guard error == nil else {
+                print("🔴 error \(error!)")
+                return
+            }
+
+            guard let videoPreviewVC = UIStoryboard(
+                name: "Main",
+                bundle: Bundle(for: HomeViewController.self))
+                .instantiateViewController(
+                    withIdentifier: "videoPreviewVC") as? VideoPreviewViewController else { return }
+
+            videoPreviewVC.fileURL = url!
+
+            self?.navigationController?
+                .pushViewController(videoPreviewVC,
+                                    animated: true)
+
+        }
     }
 
 }

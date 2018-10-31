@@ -36,11 +36,16 @@ extension AppDirectoryNames {
     }
 
     func getURL(for directory: AppDirectories) -> URL {
-        return videosDirectoryURL
+        switch directory {
+        case .documents:
+            return documentsDirectoryURL
+        case .videos:
+            return videosDirectoryURL
+        }
     }
 
     func buildFullPath(for fileName: String, in directory: AppDirectories) -> URL {
-        return getURL(for: .videos).appendingPathComponent(fileName)
+        return getURL(for: directory).appendingPathComponent(fileName)
     }
 
     func getURLBundleContainer(for fileName: String) -> URL? {

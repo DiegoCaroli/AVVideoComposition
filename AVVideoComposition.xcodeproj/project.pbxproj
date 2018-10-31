@@ -16,6 +16,7 @@
 		F1607A722189BAA300E035D6 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A712189BAA300E035D6 /* VideoManager.swift */; };
 		F1607A762189D0FA00E035D6 /* frameNoSound1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A752189D0FA00E035D6 /* frameNoSound1.mov */; };
 		F1607A782189D10100E035D6 /* frameNoSound2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A772189D10100E035D6 /* frameNoSound2.mov */; };
+		F1607A802189F16D00E035D6 /* VideoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A7F2189F16D00E035D6 /* VideoPreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		F1607A712189BAA300E035D6 /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		F1607A752189D0FA00E035D6 /* frameNoSound1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = frameNoSound1.mov; sourceTree = "<group>"; };
 		F1607A772189D10100E035D6 /* frameNoSound2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = frameNoSound2.mov; sourceTree = "<group>"; };
+		F1607A7F2189F16D00E035D6 /* VideoPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				F1607A582189B4CB00E035D6 /* HomeViewController.swift */,
+				F1607A7F2189F16D00E035D6 /* VideoPreviewViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -173,6 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1607A802189F16D00E035D6 /* VideoPreviewViewController.swift in Sources */,
 				F1607A592189B4CB00E035D6 /* HomeViewController.swift in Sources */,
 				F1607A572189B4CB00E035D6 /* AppDelegate.swift in Sources */,
 				F1607A702189B8A400E035D6 /* FileSystemManager.swift in Sources */,
