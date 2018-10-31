@@ -19,46 +19,7 @@ class VideoManager: AppDirectoryNames {
         self.secondAsset = secondAsset
     }
 
-
-    @IBAction func merge(_ sender: AnyObject) {
-
-
-//        // 3 - Audio track
-//        if let loadedAudioAsset = audioAsset {
-//            let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: 0)
-//            do {
-//                try audioTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstAsset.duration, secondAsset.duration)),
-//                                                of: loadedAudioAsset.tracks(withMediaType: .audio)[0] ,
-//                                                at: kCMTimeZero)
-//            } catch {
-//                print("Failed to load Audio track")
-//            }
-//        }
-//
-//        // 4 - Get path
-//        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateStyle = .long
-//        dateFormatter.timeStyle = .short
-//        let date = dateFormatter.string(from: Date())
-//        let url = documentDirectory.appendingPathComponent("mergeVideo-\(date).mov")
-//
-//        // 5 - Create Exporter
-//        guard let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality) else { return }
-//        exporter.outputURL = url
-//        exporter.outputFileType = AVFileType.mov
-//        exporter.shouldOptimizeForNetworkUse = true
-//        exporter.videoComposition = mainComposition
-//
-//        // 6 - Perform the Export
-//        exporter.exportAsynchronously() {
-//            DispatchQueue.main.async {
-//                self.exportDidFinish(exporter)
-//            }
-//        }
-    }
-
-    func createComposition() -> AVMutableComposition? {
+    private func createComposition() -> AVMutableComposition? {
         let mutableComposition = AVMutableComposition()
 
         // Create the video composition track.
@@ -70,7 +31,6 @@ class VideoManager: AppDirectoryNames {
 //        guard let mutableCompositionAudioTrack = mutableComposition.addMutableTrack(
 //            withMediaType: .audio,
 //            preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
-
 
         //Adding Audiovisual Data
 
@@ -127,7 +87,7 @@ class VideoManager: AppDirectoryNames {
         }
     }
 
-    func exportDidFinish(_ session: AVAssetExportSession,
+    private func exportDidFinish(_ session: AVAssetExportSession,
                          completion: @escaping ((URL?, Error?) -> ())) {
         let status = session.status
         switch status {
