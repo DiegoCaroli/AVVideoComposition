@@ -33,8 +33,8 @@ class HomeViewController: UIViewController, AppDirectoryNames {
     @IBAction func loadAssetsNoAudioButtonTapped() {
         guard let firstURLAsset = getURLBundleContainer(for: "frame1",
                                                         withExtension: "mov") else { return }
-        guard let secondURLAsset = getURLBundleContainer(for: "IMG_0382",
-                                                         withExtension: "MOV") else { return }
+        guard let secondURLAsset = getURLBundleContainer(for: "frame2",
+                                                         withExtension: "mov") else { return }
 
         self.firstAsset = AVAsset(url: firstURLAsset)
         self.secondAsset = AVAsset(url: secondURLAsset)
