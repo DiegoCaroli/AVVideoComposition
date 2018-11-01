@@ -80,7 +80,7 @@ class VideoManager: AppDirectoryNames {
         let firstInstruction = videoCompositionLayerInstruction(
             mutableCompositionVideoTrack,
             asset: firstAsset)
-        firstInstruction.setOpacity(0.0, at: firstAsset.duration)
+//        firstInstruction.setOpacity(0.0, at: firstAsset.duration)
         let secondInstruction = videoCompositionLayerInstruction(
             mutableCompositionVideoTrack,
             asset: secondAsset)

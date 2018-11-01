@@ -15,8 +15,6 @@
 		F1607A702189B8A400E035D6 /* FileSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A6F2189B8A400E035D6 /* FileSystemManager.swift */; };
 		F1607A722189BAA300E035D6 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A712189BAA300E035D6 /* VideoManager.swift */; };
 		F1607A802189F16D00E035D6 /* VideoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1607A7F2189F16D00E035D6 /* VideoPreviewViewController.swift */; };
-		F1607A92218AF81000E035D6 /* IMG_0382.MOV in Resources */ = {isa = PBXBuildFile; fileRef = F1607A91218AF81000E035D6 /* IMG_0382.MOV */; };
-		F1607A94218AF81600E035D6 /* IMG_0381.MOV in Resources */ = {isa = PBXBuildFile; fileRef = F1607A93218AF81600E035D6 /* IMG_0381.MOV */; };
 		F1607A9A218B053500E035D6 /* frame1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A99218B053500E035D6 /* frame1.mov */; };
 		F1607A9C218B053B00E035D6 /* frame2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F1607A9B218B053B00E035D6 /* frame2.mov */; };
 /* End PBXBuildFile section */
@@ -32,8 +30,6 @@
 		F1607A6F2189B8A400E035D6 /* FileSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManager.swift; sourceTree = "<group>"; };
 		F1607A712189BAA300E035D6 /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		F1607A7F2189F16D00E035D6 /* VideoPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewViewController.swift; sourceTree = "<group>"; };
-		F1607A91218AF81000E035D6 /* IMG_0382.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = IMG_0382.MOV; sourceTree = "<group>"; };
-		F1607A93218AF81600E035D6 /* IMG_0381.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = IMG_0381.MOV; sourceTree = "<group>"; };
 		F1607A99218B053500E035D6 /* frame1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = frame1.mov; sourceTree = "<group>"; };
 		F1607A9B218B053B00E035D6 /* frame2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = frame2.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,8 +79,6 @@
 		F1607A682189B6C000E035D6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F1607A91218AF81000E035D6 /* IMG_0382.MOV */,
-				F1607A93218AF81600E035D6 /* IMG_0381.MOV */,
 				F1607A99218B053500E035D6 /* frame1.mov */,
 				F1607A9B218B053B00E035D6 /* frame2.mov */,
 			);
@@ -170,9 +164,7 @@
 				F1607A612189B4CB00E035D6 /* LaunchScreen.storyboard in Resources */,
 				F1607A5E2189B4CB00E035D6 /* Assets.xcassets in Resources */,
 				F1607A9A218B053500E035D6 /* frame1.mov in Resources */,
-				F1607A94218AF81600E035D6 /* IMG_0381.MOV in Resources */,
 				F1607A5C2189B4CB00E035D6 /* Main.storyboard in Resources */,
-				F1607A92218AF81000E035D6 /* IMG_0382.MOV in Resources */,
 				F1607A9C218B053B00E035D6 /* frame2.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
