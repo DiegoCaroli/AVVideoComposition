@@ -50,38 +50,6 @@ class VideoManager: AppDirectoryNames {
                            track: secondVideoAssetTrack,
                            startTime: firstVideoAssetTrack.timeRange.duration)
 
-        // Applying the Video Composition Layer Instructions
-        let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        mutableVideoCompositionInstruction.timeRange = CMTimeRange(
-            start: CMTime.zero,
-            duration: CMTimeAdd(firstVideoAssetTrack.timeRange.duration,
-                                secondVideoAssetTrack.timeRange.duration))
-        // setup a backgroud to see if I have left empy frame
-        mutableVideoCompositionInstruction.backgroundColor = UIColor.orange.cgColor
-
-        let firstInstruction = videoCompositionLayerInstruction(
-            mutableCompositionVideoTrack,
-            asset: firstAsset)
-        firstInstruction.setOpacity(0.0, at: firstAsset.duration)
-        let secondInstruction = videoCompositionLayerInstruction(
-            mutableCompositionVideoTrack,
-            asset: secondAsset)
-
-        mutableVideoCompositionInstruction.layerInstructions = [
-            firstInstruction,
-            secondInstruction
-        ]
-
-        let videoComposition = AVMutableVideoComposition()
-        videoComposition.instructions = [mutableVideoCompositionInstruction]
-         // Set the frame duration to an appropriate value (i.e. 30 frames per second for video).
-        videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
-        videoComposition.renderSize = setupRenderSize(
-            firstVideoAssetTrack: firstVideoAssetTrack,
-            secondVideoAssetTrack: secondVideoAssetTrack)
-        applyWatermark(mutableVideoComposition: videoComposition,
-                       text: "bar")
-
         // Add first audio track to the composition.
         guard let firstAudioAssetTrack = firstAsset
             .tracks(withMediaType: .audio).first else { return }
@@ -99,6 +67,40 @@ class VideoManager: AppDirectoryNames {
                            duration: secondAudioAssetTrack.timeRange.duration,
                            track: secondAudioAssetTrack,
                            startTime: firstAudioAssetTrack.timeRange.duration)
+
+        // Applying the Video Composition Layer Instructions
+        let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
+        mutableVideoCompositionInstruction.timeRange = CMTimeRange(
+            start: CMTime.zero,
+            duration: CMTimeAdd(firstVideoAssetTrack.timeRange.duration,
+                                secondVideoAssetTrack.timeRange.duration))
+        // setup a backgroud to see if I have left empy frame
+        mutableVideoCompositionInstruction.backgroundColor = UIColor.orange.cgColor
+
+        let firstInstruction = videoCompositionLayerInstruction(
+            mutableCompositionVideoTrack,
+            asset: firstAsset)
+//        firstInstruction.setOpacity(0.0, at: firstAsset.duration)
+        let secondInstruction = videoCompositionLayerInstruction(
+            mutableCompositionVideoTrack,
+            asset: secondAsset)
+
+        mutableVideoCompositionInstruction.layerInstructions = [
+            firstInstruction,
+            secondInstruction
+        ]
+
+        let videoComposition = AVMutableVideoComposition()
+
+        videoComposition.instructions = [mutableVideoCompositionInstruction]
+        // Set the frame duration to an appropriate value (i.e. 30 frames per second for video).
+        videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
+        videoComposition.renderSize = setupRenderSizeFirstVideoAsset(
+            firstVideoAssetTrack: firstVideoAssetTrack)
+        applyWatermark(mutableVideoComposition: videoComposition,
+                       text: "bar")
+
+
 
         exportComposition(mutableComposition: mutableComposition,
                           videoComposition: videoComposition,
@@ -225,7 +227,9 @@ class VideoManager: AppDirectoryNames {
         var isFirstVideoAssetPortrait = false
         let firstTransform = firstVideoAssetTrack.preferredTransform
 
-        if (firstTransform.a == 0 && firstTransform.d == 0 && (firstTransform.b == 1.0 || firstTransform.b == -1.0) && (firstTransform.c == 1.0 || firstTransform.c == -1.0)) {
+        if (firstTransform.a == 0 && firstTransform.d == 0 &&
+            (firstTransform.b == 1.0 || firstTransform.b == -1.0) &&
+            (firstTransform.c == 1.0 || firstTransform.c == -1.0)) {
             isFirstVideoAssetPortrait = true
         }
 
@@ -248,6 +252,40 @@ class VideoManager: AppDirectoryNames {
         }
     }
 
+    // Checking the first Video Orientations
+    private func checkingFirstVideoAssetPortraitOrientation(
+        firstVideoAssetTrack: AVAssetTrack) -> Bool {
+        var isFirstVideoAssetPortrait = false
+        let firstTransform = firstVideoAssetTrack.preferredTransform
+
+        if (firstTransform.a == 0 && firstTransform.d == 0 &&
+            (firstTransform.b == 1.0 || firstTransform.b == -1.0) &&
+            (firstTransform.c == 1.0 || firstTransform.c == -1.0)) {
+            isFirstVideoAssetPortrait = true
+        }
+
+        return isFirstVideoAssetPortrait ? true : false
+    }
+    // setup render size based on first video asset
+    private func setupRenderSizeFirstVideoAsset(firstVideoAssetTrack: AVAssetTrack) -> CGSize {
+        var naturalSizeFirst: CGSize
+
+        // If the first video asset was shot in portrait mode.
+        let isFirstVideoAssetPortrait = checkingFirstVideoAssetPortraitOrientation(
+            firstVideoAssetTrack: firstVideoAssetTrack)
+
+        if isFirstVideoAssetPortrait {
+            // Invert the width and height for the video tracks to ensure that they display properly.
+            naturalSizeFirst = CGSize(width: firstVideoAssetTrack.naturalSize.height,
+                                      height: firstVideoAssetTrack.naturalSize.width)
+        } else {
+            // If the videos weren't shot in portrait mode, we can just use their natural sizes.
+            naturalSizeFirst = firstVideoAssetTrack.naturalSize
+        }
+
+        return naturalSizeFirst
+    }
+
     // Add watermark
     private func applyWatermark(mutableVideoComposition: AVMutableVideoComposition,
                                 text: String) {
@@ -266,10 +304,10 @@ class VideoManager: AppDirectoryNames {
         parentLayer.addSublayer(videoLayer)
 
         let textLayer = CATextLayer()
+        textLayer.contentsScale = UIScreen.main.scale
         textLayer.foregroundColor = UIColor.cyan.cgColor
         textLayer.string = text
-        textLayer.font = "Helvetica" as CFTypeRef
-        textLayer.fontSize = 30
+        textLayer.font = UIFont(name: "TrebuchetMS-Bold", size: 42.0)
         textLayer.alignmentMode = .center
         textLayer.frame = CGRect(x: mutableVideoComposition.renderSize.width / 8,
                                  y: mutableVideoComposition.renderSize.height / 2,

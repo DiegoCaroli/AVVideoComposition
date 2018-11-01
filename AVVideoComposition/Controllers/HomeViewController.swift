@@ -22,11 +22,19 @@ class HomeViewController: UIViewController, AppDirectoryNames {
         super.viewDidLoad()
 
         doneButton.isEnabled = false
+
+//        let files = try? FileManager.default.contentsOfDirectory(atPath: videosDirectoryURL.path)
+//
+//        print("DIRECTORY: \(videosDirectoryURL.path)")
+//        print("\n")
+//        files.forEach { print("File: \($0.debugDescription)") }
     }
 
     @IBAction func loadAssetsNoAudioButtonTapped() {
-        guard let firstURLAsset = getURLBundleContainer(for: "frame1") else { return }
-        guard let secondURLAsset = getURLBundleContainer(for: "frame2") else { return }
+        guard let firstURLAsset = getURLBundleContainer(for: "frame1",
+                                                        withExtension: "mov") else { return }
+        guard let secondURLAsset = getURLBundleContainer(for: "IMG_0382",
+                                                         withExtension: "MOV") else { return }
 
         self.firstAsset = AVAsset(url: firstURLAsset)
         self.secondAsset = AVAsset(url: secondURLAsset)
